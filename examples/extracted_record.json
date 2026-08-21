@@ -1,0 +1,13 @@
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+{
+  "invoice_id": "DEMO-2026-0001",
+  "station_name": "Example Rooftop Solar Site",
+  "account_number": "DEMO-ACCOUNT-001",
+  "billing_start": "2026-07-01",
+  "billing_end": "2026-07-31",
+  "energy_kwh": "12540.75",
+  "unit_rate": "0.1180",
+  "amount_due": "1479.81",
+  "source_file": "synthetic_invoice.pdf",
+  "warnings": []
+}

@@ -1,0 +1,9 @@
+{
+  "document": "one-page synthetic text-layer PDF",
+  "runs": 100,
+  "mean_ms": 0.7085479632951319,
+  "median_ms": 0.6771044572815299,
+  "min_ms": 0.6486669881269336,
+  "max_ms": 2.857249928638339,
+  "note": "Local engineering benchmark; not an OCR accuracy claim."
+}
