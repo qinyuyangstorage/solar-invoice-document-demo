@@ -8,7 +8,7 @@ A clean-room, privacy-safe portfolio project inspired by photovoltaic billing au
 
 ```text
 synthetic PDF invoice
-  -> text-layer extraction
+  -> text-layer extraction or Tesseract OCR fallback
   -> typed field parsing
   -> arithmetic QA and anomaly warnings
   -> JSON / batch CSV export
@@ -50,7 +50,8 @@ The committed benchmark reports local parsing latency for a one-page synthetic t
 
 ## Honest scope
 
-- The committed demo exercises PDFs with a text layer.
-- A production OCR adapter for scanned pages is a future extension.
+- The committed tests exercise both text-layer PDFs and image-only synthetic scans.
+- Image-only PDFs are rendered and processed through a Tesseract OCR fallback, verified by an automated synthetic scan test.
+- Production use would still require a representative, authorized evaluation set and OCR error analysis.
 - The synthetic schema is generic and does not reproduce an employer document format.
 - This repository is suitable for demonstrating document parsing, validation, API design, testing, and privacy-aware engineering—not production accuracy claims.

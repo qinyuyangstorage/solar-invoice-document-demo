@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import re
 from decimal import Decimal
+from io import BytesIO
 from pathlib import Path
 
 import pymupdf as fitz
+import pytesseract
+from PIL import Image
 
 from solar_invoice.models import InvoiceRecord
 
@@ -22,7 +25,15 @@ PATTERNS = {
 
 def extract_pdf_text(path: str | Path) -> str:
     with fitz.open(path) as document:
-        return "\n".join(page.get_text("text") for page in document)
+        native_text = "\n".join(page.get_text("text") for page in document)
+        if len(native_text.strip()) >= 80:
+            return native_text
+        ocr_pages: list[str] = []
+        for page in document:
+            pixmap = page.get_pixmap(matrix=fitz.Matrix(2.5, 2.5), alpha=False)
+            image = Image.open(BytesIO(pixmap.tobytes("png")))
+            ocr_pages.append(pytesseract.image_to_string(image, config="--psm 6"))
+        return "\n".join(ocr_pages)
 
 
 def _required_match(name: str, text: str) -> re.Match[str]:
