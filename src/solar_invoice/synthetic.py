@@ -6,7 +6,9 @@ from pathlib import Path
 import pymupdf as fitz
 
 
-def create_synthetic_invoice(path: str | Path, *, amount_override: Decimal | None = None) -> Path:
+def create_synthetic_invoice(
+    path: str | Path, *, amount_override: Decimal | None = None, image_only: bool = False
+) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     energy = Decimal("12540.75")
@@ -30,5 +32,14 @@ def create_synthetic_invoice(path: str | Path, *, amount_override: Decimal | Non
     for line in lines[1:]:
         page.insert_text((55, y), line, fontsize=11)
         y += 34
-    document.save(path)
+    if image_only:
+        pixmap = page.get_pixmap(matrix=fitz.Matrix(2.0, 2.0), alpha=False)
+        scanned = fitz.open()
+        scanned_page = scanned.new_page(width=595, height=842)
+        scanned_page.insert_image(scanned_page.rect, stream=pixmap.tobytes("png"))
+        scanned.save(path)
+        scanned.close()
+    else:
+        document.save(path)
+    document.close()
     return path

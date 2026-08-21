@@ -28,3 +28,10 @@ def test_api_extracts_pdf(tmp_path) -> None:
         response = TestClient(app).post("/extract", files={"file": ("api.pdf", stream, "application/pdf")})
     assert response.status_code == 200
     assert response.json()["invoice_id"] == "DEMO-2026-0001"
+
+
+def test_image_only_pdf_uses_ocr(tmp_path) -> None:
+    pdf = create_synthetic_invoice(tmp_path / "scan.pdf", image_only=True)
+    record = extract_invoice(pdf)
+    assert record.invoice_id == "DEMO-2026-0001"
+    assert record.amount_due == Decimal("1479.81")
